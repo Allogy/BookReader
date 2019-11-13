@@ -189,14 +189,13 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     }
     
     public static func getSavedPageIndexes() -> [String : Int]? {
-        if let indexes = UserDefaults.standard.object(forKey: BookViewControllerSavedPageIndexesDictionaryKey) as? Data, let indexDict = NSKeyedUnarchiver.unarchiveObject(with: indexes) as? [String : Int] {
+        if let indexes = UserDefaults.standard.object(forKey: BookViewControllerSavedPageIndexesDictionaryKey) as? Data, let indexDict = try? JSONDecoder().decode([String : Int].self, from: indexes)  {
             return indexDict
         }
         return nil
     }
     
     public static func saveCurrentPageIndex(id: String, index: Int) {
-        
         var indexDict = [String : Int]()
         
         if let savedIndexDict = self.getSavedPageIndexes() {
@@ -204,9 +203,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         }
         
         indexDict[id] = index
-        
-        let indexData = NSKeyedArchiver.archivedData(withRootObject: indexDict)
-        
+        let indexData = try? JSONEncoder().encode(indexDict)
         UserDefaults.standard.set(indexData, forKey: BookViewControllerSavedPageIndexesDictionaryKey)
     }
     
