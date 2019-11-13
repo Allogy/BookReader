@@ -87,9 +87,6 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
 
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
 
-        self.barHideOnTapGestureRecognizer.addTarget(self, action: #selector(gestureRecognizedToggleVisibility(_:)))
-       
-
         self.tableOfContentsToggleSegmentedControl.selectedSegmentIndex = 0
         self.tableOfContentsToggleSegmentedControl.addTarget(self, action: #selector(toggleTableOfContentsView(_:)), for: .valueChanged)
 
