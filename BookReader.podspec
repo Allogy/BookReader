@@ -31,12 +31,12 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/Allogy/BookReader.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/allogy'
 
-  s.ios.deployment_target = '12.0'
+  s.ios.deployment_target = '13.0'
 
   s.source_files = 'BookReader/Classes/**/*'
   
   s.resource_bundles = {
-      'BookReader' => ['BookReader/Assets/*.png', 'BookReader/Assets/*.xib', 'BookReader/Assets/*.storyboard', 'BookReader/Assets/*.xcassets']
+      'BookReader' => ['BookReader/Assets/*.xib', 'BookReader/Assets/*.storyboard']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'

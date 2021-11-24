@@ -33,7 +33,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     public var bookmarkButtonSelectedColor: UIColor = UIColor.red
     
     public var enableResume: Bool = true
-    
+        
     public var currentPage: PDFPage? {
         get {
             if let id = self.pdfDocument?.documentURL?.absoluteString ?? self.pdfDocument?.documentAttributes?[PDFDocumentAttribute.titleAttribute] as? String,
@@ -63,6 +63,8 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     public var didChangePage: ((PDFView) -> Void)?
     public var willDismiss: (() -> Void)?
     
+    private var keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+
     var bundle: Bundle!
     
     static var BookViewControllerSavedPageIndexesDictionaryKey = "BookViewControllerSavedPageIndexesDictionaryKey"
@@ -75,14 +77,19 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     override public func viewDidLoad() {
         super.viewDidLoad()
         
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
         self.pdfView.document = pdfDocument
 
         self.bundle = Bundle.bookReader
         
         self.tableOfContentsToggleSegmentedControl = UISegmentedControl(items: [
-            UIImage.init(named: "view_module", in: bundle, compatibleWith: nil)!,
-            UIImage.init(named: "list", in: bundle, compatibleWith: nil)!,
-            UIImage.init(named: "bookmark_ribbon", in: bundle, compatibleWith: nil)!,
+            UIImage(systemName: "rectangle.grid.3x2.fill")!,
+            UIImage(systemName: "list.bullet")!,
+            UIImage(systemName: "bookmark.fill")!,
             ])
 
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
@@ -124,7 +131,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         super.viewWillDisappear(animated)
         
         if self.navigationController?.topViewController != self {
-            UIApplication.shared.keyWindow?.windowLevel = .normal
+            self.keyWindow?.windowLevel = .normal
             self.presentedViewController?.dismiss(animated: false, completion: nil)
         }
     }
@@ -159,7 +166,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
                 self?.pdfView.layoutDocumentView()
 
                 if self?.pdfThumbnailViewContainer.alpha == 1 {
-                    UIApplication.shared.keyWindow?.windowLevel = .normal
+                    self?.keyWindow?.windowLevel = .normal
                 }
                 else {
                     self?.hideBars()
@@ -281,16 +288,16 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     }
 
     private func resume() {
-        let backButton = UIBarButtonItem(image: UIImage.init(named: "back_arrow", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(back(_:)))
-        let tableOfContentsButton = UIBarButtonItem(image: UIImage.init(named: "list", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(showTableOfContents(_:)))
-        let actionButton = UIBarButtonItem(image: UIImage(named: "action", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(share(from:)))
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back(_:)))
+        let tableOfContentsButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(showTableOfContents(_:)))
+        let actionButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(share(from:)))
 //        let actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share(from:)))
         navigationItem.leftBarButtonItems = [backButton, tableOfContentsButton, actionButton]
 
-        let brightnessButton = UIBarButtonItem(image: UIImage.init(named: "sun", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(showAppearanceMenu(_:)))
-        let searchButton = UIBarButtonItem(image: UIImage.init(named: "search", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(showSearchView(_:)))
+        let brightnessButton = UIBarButtonItem(image: UIImage(systemName: "sun.max.fill"), style: .plain, target: self, action: #selector(showAppearanceMenu(_:)))
+        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(showSearchView(_:)))
 //        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchView(_:)))
-        self.bookmarkButton = UIBarButtonItem(image: UIImage.init(named: "bookmark_ribbon", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(addOrRemoveBookmark(_:)))
+        self.bookmarkButton = UIBarButtonItem(image: UIImage(systemName: "bookmark.fill"), style: .plain, target: self, action: #selector(addOrRemoveBookmark(_:)))
         self.navigationItem.rightBarButtonItems = [bookmarkButton, searchButton, brightnessButton]
 
         self.pdfThumbnailViewContainer.alpha = 1
@@ -316,7 +323,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         self.view.exchangeSubview(at: 0, withSubviewAt: 1)
         self.view.exchangeSubview(at: 0, withSubviewAt: 2)
 
-        let backButton = UIBarButtonItem(image: UIImage.init(named: "back_arrow", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(back(_:)))
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back(_:)))
         let tableOfContentsToggleBarButton = UIBarButtonItem(customView: tableOfContentsToggleSegmentedControl)
         let resumeBarButton = UIBarButtonItem(title: NSLocalizedString("Resume", comment: ""), style: .done, target: self, action: #selector(resume(_:)))
         self.navigationItem.leftBarButtonItems = [backButton, tableOfContentsToggleBarButton]
@@ -337,7 +344,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         
         self.willDismiss?()
         
-        UIApplication.shared.keyWindow?.windowLevel = .normal
+        self.keyWindow?.windowLevel = .normal
 
         if let presentingViewController = self.presentingViewController {
             presentingViewController.dismiss(animated: true, completion: nil)
@@ -396,7 +403,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
                 if let index = bookmarks.firstIndex(of: pageIndex) {
                     bookmarks.remove(at: index)
                     UserDefaults.standard.set(bookmarks, forKey: documentURL)
-                    self.bookmarkButton.image = UIImage.init(named: "bookmark_ribbon", in: bundle, compatibleWith: nil)
+                    self.bookmarkButton.image = UIImage(systemName: "bookmark.fill")
                     self.bookmarkButton.tintColor = nil
                 } else {
                     UserDefaults.standard.set((bookmarks + [pageIndex]).sorted(), forKey: documentURL)
@@ -471,7 +478,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     private func showBars() {
         if let navigationController = self.navigationController {
             UIView.animate(withDuration: CATransaction.animationDuration()) { [weak self] in
-                UIApplication.shared.keyWindow?.windowLevel = .normal
+                self?.keyWindow?.windowLevel = .normal
                 navigationController.navigationBar.alpha = 1
                 self?.pdfThumbnailViewContainer.alpha = 1
                 self?.titleLabelContainer.alpha = self?.hasTitle() ?? false ? 1 : 0
@@ -485,7 +492,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     private func hideBars() {
         if let navigationController = self.navigationController {
             UIView.animate(withDuration: CATransaction.animationDuration()) { [weak self] in
-                UIApplication.shared.keyWindow?.windowLevel = .statusBar
+                self?.keyWindow?.windowLevel = .statusBar
                 navigationController.navigationBar.alpha = 0
                 self?.pdfThumbnailViewContainer.alpha = 0
                 self?.titleLabelContainer.alpha = 0

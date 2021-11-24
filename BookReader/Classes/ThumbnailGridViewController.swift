@@ -88,6 +88,6 @@ public class ThumbnailGridViewController: UICollectionViewController, UICollecti
     }
 }
 
-protocol ThumbnailGridViewControllerDelegate: class {
+protocol ThumbnailGridViewControllerDelegate: AnyObject {
     func thumbnailGridViewController(_ thumbnailGridViewController: ThumbnailGridViewController, didSelectPage page: PDFPage)
 }

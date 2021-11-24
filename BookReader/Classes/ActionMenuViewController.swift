@@ -27,7 +27,7 @@ public class ActionMenuViewController: UITableViewController {
     }
 }
 
-protocol ActionMenuViewControllerDelegate: class {
+protocol ActionMenuViewControllerDelegate: AnyObject {
     func actionMenuViewControllerShareDocument(_ actionMenuViewController: ActionMenuViewController)
     func actionMenuViewControllerPrintDocument(_ actionMenuViewController: ActionMenuViewController)
 }

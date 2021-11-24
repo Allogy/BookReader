@@ -70,6 +70,6 @@ public class OutlineViewController: UITableViewController {
     }
 }
 
-protocol OutlineViewControllerDelegate: class {
+protocol OutlineViewControllerDelegate: AnyObject {
     func outlineViewController(_ outlineViewController: OutlineViewController, didSelectOutlineAt destination: PDFDestination)
 }

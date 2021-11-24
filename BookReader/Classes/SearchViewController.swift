@@ -107,6 +107,6 @@ public class SearchViewController: UITableViewController, UISearchBarDelegate, P
     }
 }
 
-protocol SearchViewControllerDelegate: class {
+protocol SearchViewControllerDelegate: AnyObject {
     func searchViewController(_ searchViewController: SearchViewController, didSelectSearchResult selection: PDFSelection)
 }
