@@ -146,9 +146,6 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     override public func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.adjustThumbnailViewHeight()
-        
-        self.pdfView.autoScales = true
-        self.pdfView.layoutDocumentView()
     }
 
     @objc func goToPage(_ page: PDFPage) {
@@ -440,10 +437,6 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     }
 
     @objc func pdfViewPageChanged(_ notification: Notification) {
-
-        if self.pdfViewGestureRecognizer.isTracking {
-            self.hideBars()
-        }
         self.updateBookmarkStatus()
         self.updatePageNumberLabel()
         
