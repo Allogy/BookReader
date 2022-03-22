@@ -82,6 +82,9 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
+        self.pdfView.backgroundColor = UIColor.systemBackground
+        self.view.backgroundColor = UIColor.systemBackground
+        
         self.pdfView.document = pdfDocument
 
         self.bundle = Bundle.bookReader
