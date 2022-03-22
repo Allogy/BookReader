@@ -69,8 +69,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     
     static var BookViewControllerSavedPageIndexesDictionaryKey = "BookViewControllerSavedPageIndexesDictionaryKey"
     
-    @objc public static func makeFromStoryboard() -> BookViewController
-    {
+    @objc public static func makeFromStoryboard() -> BookViewController {
         return UIStoryboard(name: "BookReader", bundle: Bundle.bookReader).instantiateViewController(withIdentifier: "BookViewController") as! BookViewController
     }
     
@@ -101,12 +100,10 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
 
         self.tableOfContentsToggleSegmentedControl.selectedSegmentIndex = 0
         self.tableOfContentsToggleSegmentedControl.addTarget(self, action: #selector(toggleTableOfContentsView(_:)), for: .valueChanged)
-
+        
         self.pdfView.autoScales = true
         self.pdfView.displayMode = .singlePageContinuous
         self.pdfView.displayDirection = .vertical
-//        pdfView.usePageViewController(true, withViewOptions: [UIPageViewController.OptionsKey.interPageSpacing: 20])
-
         self.pdfView.pageBreakMargins = UIEdgeInsets(top: 0, left: 0, bottom: 88, right: 0)
         
         self.barHideOnTapGestureRecognizer.addTarget(self, action: #selector(gestureRecognizedToggleVisibility(_:)))
@@ -128,7 +125,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         }
 
         if let page = page {
-            self.perform(#selector(goToPage), with: page, afterDelay: 0.1)
+            self.pdfView.go(to: page)
         }
     }
     
@@ -154,16 +151,11 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         self.pdfView.go(to: page)
     }
 
-    
     override public func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        
-//        self.pdfView.autoScales = true
-
         coordinator.animate(alongsideTransition: { [weak self] (context) in
             self?.adjustThumbnailViewHeight()
 
             }, completion: { [weak self] (context) in
-                
                 self?.pdfView.autoScales = true
                 self?.pdfView.layoutDocumentView()
 
@@ -249,7 +241,6 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     }
 
     @objc func share(from barButtonItem: UIBarButtonItem) {
-        
         if let pdfUrl = self.pdfDocument?.documentURL {
             var activityItems: [Any] = [pdfUrl]
             if let title = self.pdfDocument?.documentAttributes?["Title"] as? String {
@@ -293,12 +284,10 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back(_:)))
         let tableOfContentsButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(showTableOfContents(_:)))
         let actionButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(share(from:)))
-//        let actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share(from:)))
         navigationItem.leftBarButtonItems = [backButton, tableOfContentsButton, actionButton]
 
         let brightnessButton = UIBarButtonItem(image: UIImage(systemName: "sun.max.fill"), style: .plain, target: self, action: #selector(showAppearanceMenu(_:)))
         let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(showSearchView(_:)))
-//        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchView(_:)))
         self.bookmarkButton = UIBarButtonItem(image: UIImage(systemName: "bookmark.fill"), style: .plain, target: self, action: #selector(addOrRemoveBookmark(_:)))
         self.navigationItem.rightBarButtonItems = [bookmarkButton, searchButton, brightnessButton]
 
@@ -343,7 +332,6 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     }
 
     @objc func back(_ sender: UIBarButtonItem) {
-        
         self.willDismiss?()
         
         self.keyWindow?.windowLevel = .normal
@@ -409,7 +397,6 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
                     self.bookmarkButton.tintColor = nil
                 } else {
                     UserDefaults.standard.set((bookmarks + [pageIndex]).sorted(), forKey: documentURL)
-//                    self.bookmarkButton.image = UIImage.init(named: "bookmark_ribbon", in: bundle, compatibleWith: nil)
                     self.bookmarkButton.tintColor = self.bookmarkButtonSelectedColor
                 }
             }
@@ -441,7 +428,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     @objc func pdfViewPageChanged(_ notification: Notification) {
         self.updateBookmarkStatus()
         self.updatePageNumberLabel()
-        
+
         self.currentPage = self.pdfView.currentPage
         self.didChangePage?(notification.object as! PDFView)
     }
