@@ -21,7 +21,8 @@ public class ThumbnailGridCell: UICollectionViewCell {
     }
     var pageNumber = 0 {
         didSet {
-            pageNumberLabel.text = String(pageNumber)
+            pageNumberLabel.text = " \(String(pageNumber + 1)) "
+            pageNumberLabel.isHidden = false
         }
     }
     @IBOutlet private weak var imageView: UIImageView!
@@ -30,6 +31,8 @@ public class ThumbnailGridCell: UICollectionViewCell {
     override public func awakeFromNib() {
         super.awakeFromNib()
         pageNumberLabel.isHidden = true
+        self.imageView.layer.borderColor = UIColor.systemFill.cgColor
+        self.imageView.layer.borderWidth = 1.0
     }
 
     override public func prepareForReuse() {
