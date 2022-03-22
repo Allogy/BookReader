@@ -92,6 +92,8 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
             UIImage(systemName: "bookmark.fill")!,
             ])
 
+        self.resume()
+
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
 
         self.tableOfContentsToggleSegmentedControl.selectedSegmentIndex = 0
@@ -113,8 +115,6 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         self.titleLabel.text = pdfDocument?.documentAttributes?["Title"] as? String
         self.titleLabelContainer.layer.cornerRadius = 4
         self.pageNumberLabelContainer.layer.cornerRadius = 4
-
-        self.resume()
         
         var page = self.pdfDocument?.page(at: 0)
         
