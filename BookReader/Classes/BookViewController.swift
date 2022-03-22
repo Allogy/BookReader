@@ -107,6 +107,8 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         self.pdfView.displayDirection = .vertical
 //        pdfView.usePageViewController(true, withViewOptions: [UIPageViewController.OptionsKey.interPageSpacing: 20])
 
+        self.pdfView.pageBreakMargins = UIEdgeInsets(top: 0, left: 0, bottom: 88, right: 0)
+        
         self.barHideOnTapGestureRecognizer.addTarget(self, action: #selector(gestureRecognizedToggleVisibility(_:)))
         
         self.pdfView.addGestureRecognizer(barHideOnTapGestureRecognizer)
