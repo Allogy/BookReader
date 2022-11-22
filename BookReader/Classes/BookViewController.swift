@@ -31,7 +31,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
 
     public var bookmarkButton: UIBarButtonItem!
     public var bookmarkButtonSelectedColor: UIColor = UIColor.red
-    
+	public var enableShareSheet: Bool = true
     public var enableResume: Bool = true
         
     public var currentPage: PDFPage? {
@@ -283,9 +283,14 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     private func resume() {
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back(_:)))
         let tableOfContentsButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(showTableOfContents(_:)))
-        let actionButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(share(from:)))
-        navigationItem.leftBarButtonItems = [backButton, tableOfContentsButton, actionButton]
 
+        navigationItem.leftBarButtonItems = [backButton, tableOfContentsButton]
+
+		if self.enableShareSheet {
+			let actionButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(share(from:)))
+			navigationItem.leftBarButtonItems?.append(actionButton)
+		}
+		
         let brightnessButton = UIBarButtonItem(image: UIImage(systemName: "sun.max.fill"), style: .plain, target: self, action: #selector(showAppearanceMenu(_:)))
         let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(showSearchView(_:)))
         self.bookmarkButton = UIBarButtonItem(image: UIImage(systemName: "bookmark.fill"), style: .plain, target: self, action: #selector(addOrRemoveBookmark(_:)))
