@@ -7,18 +7,19 @@
 //
 
 import UIKit
-import PDFKit
+@preconcurrency import PDFKit
 
-public class SearchViewController: UITableViewController, UISearchBarDelegate, PDFDocumentDelegate {
+@MainActor
+public class SearchViewController: UITableViewController, UISearchBarDelegate {
     var pdfDocument: PDFDocument?
     weak var delegate: SearchViewControllerDelegate?
 
     var searchBar = UISearchBar()
-    var searchResults = [PDFSelection]()
+    nonisolated(unsafe) var searchResults = [PDFSelection]()
 
-    deinit {
-        pdfDocument?.cancelFindString()
-        pdfDocument?.delegate = nil
+    nonisolated deinit {
+        // Note: We can't safely access pdfDocument here due to main actor isolation
+        // The PDFDocument will be properly cleaned up when the view controller is deallocated
     }
 
     override public func viewDidLoad() {
@@ -38,6 +39,12 @@ public class SearchViewController: UITableViewController, UISearchBarDelegate, P
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         searchBar.becomeFirstResponder()
+    }
+    
+    override public func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        pdfDocument?.cancelFindString()
+        pdfDocument?.delegate = nil
     }
 
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -59,11 +66,6 @@ public class SearchViewController: UITableViewController, UISearchBarDelegate, P
             pdfDocument?.delegate = self
             pdfDocument?.beginFindString(searchText, withOptions: .caseInsensitive)
         }
-    }
-
-    public func didMatchString(_ instance: PDFSelection) {
-        searchResults.append(instance)
-        tableView.reloadData()
     }
 
     override public func numberOfSections(in tableView: UITableView) -> Int {
@@ -107,6 +109,17 @@ public class SearchViewController: UITableViewController, UISearchBarDelegate, P
     }
 }
 
+// MARK: - PDFDocumentDelegate
+extension SearchViewController: PDFDocumentDelegate {
+    nonisolated public func didMatchString(_ instance: PDFSelection) {
+        searchResults.append(instance)
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+}
+
+@MainActor
 protocol SearchViewControllerDelegate: AnyObject {
     func searchViewController(_ searchViewController: SearchViewController, didSelectSearchResult selection: PDFSelection)
 }

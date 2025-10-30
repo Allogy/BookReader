@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 public class ActionMenuViewController: UITableViewController {
     weak var delegate: ActionMenuViewControllerDelegate?
     
@@ -27,6 +28,7 @@ public class ActionMenuViewController: UITableViewController {
     }
 }
 
+@MainActor
 protocol ActionMenuViewControllerDelegate: AnyObject {
     func actionMenuViewControllerShareDocument(_ actionMenuViewController: ActionMenuViewController)
     func actionMenuViewControllerPrintDocument(_ actionMenuViewController: ActionMenuViewController)

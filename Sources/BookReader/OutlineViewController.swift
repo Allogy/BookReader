@@ -7,8 +7,9 @@
 //
 
 import UIKit
-import PDFKit
+@preconcurrency import PDFKit
 
+@MainActor
 public class OutlineViewController: UITableViewController {
     var pdfDocument: PDFDocument?
     var toc = [PDFOutline]()
@@ -70,6 +71,7 @@ public class OutlineViewController: UITableViewController {
     }
 }
 
+@MainActor
 protocol OutlineViewControllerDelegate: AnyObject {
     func outlineViewController(_ outlineViewController: OutlineViewController, didSelectOutlineAt destination: PDFDestination)
 }

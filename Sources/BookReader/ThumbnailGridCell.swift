@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 public class ThumbnailGridCell: UICollectionViewCell {
     override public var isHighlighted: Bool {
         didSet {
@@ -30,9 +31,11 @@ public class ThumbnailGridCell: UICollectionViewCell {
 
     override public func awakeFromNib() {
         super.awakeFromNib()
-        pageNumberLabel.isHidden = true
-        self.imageView.layer.borderColor = UIColor.systemFill.cgColor
-        self.imageView.layer.borderWidth = 1.0
+        Task { @MainActor in
+            pageNumberLabel.isHidden = true
+            self.imageView.layer.borderColor = UIColor.systemFill.cgColor
+            self.imageView.layer.borderWidth = 1.0
+        }
     }
 
     override public func prepareForReuse() {

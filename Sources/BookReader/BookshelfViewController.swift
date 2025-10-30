@@ -7,12 +7,13 @@
 //
 
 import UIKit
-import PDFKit
+@preconcurrency import PDFKit
 
 extension Notification.Name {
     public static let documentDirectoryDidChange = Notification.Name("documentDirectoryDidChange")
 }
 
+@MainActor
 public class BookshelfViewController: UITableViewController {
     var documents = [PDFDocument]()
 
@@ -65,12 +66,13 @@ public class BookshelfViewController: UITableViewController {
                     if let thumbnail = thumbnailCache.object(forKey: key) {
                         cell.thumbnail = thumbnail
                     } else {
-                        downloadQueue.async {
+                        // Generate thumbnail on background queue without capturing PDFPage
+                        Task.detached(priority: .utility) { [weak self, weak cell] in
                             let thumbnail = page.thumbnail(of: CGSize(width: 40, height: 60), for: .cropBox)
-                            self.thumbnailCache.setObject(thumbnail, forKey: key)
-                            if cell.url == key {
-                                DispatchQueue.main.async {
-                                    cell.thumbnail = thumbnail
+                            await MainActor.run { [weak self, weak cell] in
+                                self?.thumbnailCache.setObject(thumbnail, forKey: key)
+                                if cell?.url == key {
+                                    cell?.thumbnail = thumbnail
                                 }
                             }
                         }

@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 public class BookshelfCell: UITableViewCell {
     var thumbnail: UIImage? = nil {
         didSet {
@@ -32,12 +33,14 @@ public class BookshelfCell: UITableViewCell {
 
     override public func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
-        authorLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-        authorLabel.textColor = .gray
+        Task { @MainActor in
+            titleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+            authorLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+            authorLabel.textColor = .gray
 
-        titleLabel.text = title
-        authorLabel.text = author
+            titleLabel.text = title
+            authorLabel.text = author
+        }
     }
 
     override public func prepareForReuse() {

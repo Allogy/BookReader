@@ -1,5 +1,5 @@
 //
-//  BookmarkViewController.swift
+//  ThumbnailGridViewController.swift
 //  BookReader
 //
 //  Created by Kishikawa Katsumi on 2017/07/03.
@@ -7,22 +7,19 @@
 //
 
 import UIKit
-import PDFKit
+@preconcurrency import PDFKit
 
-public class BookmarkViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+@MainActor
+public class ThumbnailGridViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     var pdfDocument: PDFDocument?
-    var bookmarks = [Int]()
+    weak var delegate: ThumbnailGridViewControllerDelegate?
 
-    weak var delegate: BookmarkViewControllerDelegate?
-
-    let thumbnailCache = NSCache<NSNumber, UIImage>()
     private let downloadQueue = DispatchQueue(label: "com.kishikawakatsumi.pdfviewer.thumbnail")
+    let thumbnailCache = NSCache<NSNumber, UIImage>()
 
     func cellSize(for indexPath: IndexPath) -> CGSize {
-        let pageNumber = bookmarks[indexPath.item]
-
         if let collectionView = collectionView,
-            let page = pdfDocument?.page(at: pageNumber) {
+            let page = pdfDocument?.page(at: indexPath.item) {
             var width = collectionView.frame.width
             var height = collectionView.frame.height
             if width > height {
@@ -31,7 +28,7 @@ public class BookmarkViewController: UICollectionViewController, UICollectionVie
             
             let size = page.bounds(for: .cropBox)
             
-            width = (width - 40 - 40) / 3
+            width = (width - 80) / 3
             height = (width / size.width) * size.height
             
             return CGSize(width: width, height: height)
@@ -44,17 +41,9 @@ public class BookmarkViewController: UICollectionViewController, UICollectionVie
 
         let backgroundView = UIView()
         collectionView?.backgroundView = backgroundView
-
+        
         let bundle = Bundle.bookReader
-
         collectionView?.register(UINib(nibName: String(describing: ThumbnailGridCell.self), bundle: bundle), forCellWithReuseIdentifier: "Cell")
-
-        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange(_:)), name: UserDefaults.didChangeNotification, object: nil)
-        refreshData()
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 
     override public func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -62,14 +51,14 @@ public class BookmarkViewController: UICollectionViewController, UICollectionVie
     }
 
     override public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return bookmarks.count
+        return pdfDocument?.pageCount ?? 0
     }
 
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ThumbnailGridCell
 
-        let pageNumber = bookmarks[indexPath.item]
-        if let page = pdfDocument?.page(at: pageNumber) {
+        if let page = pdfDocument?.page(at: indexPath.item) {
+            let pageNumber = indexPath.item
             cell.pageNumber = pageNumber
 
             let key = NSNumber(value: pageNumber)
@@ -77,12 +66,12 @@ public class BookmarkViewController: UICollectionViewController, UICollectionVie
                 cell.image = thumbnail
             } else {
                 let size = cellSize(for: indexPath)
-                downloadQueue.async { [weak self] in
+                Task.detached(priority: .utility) { [weak self, weak cell] in
                     let thumbnail = page.thumbnail(of: size, for: .cropBox)
-                    self?.thumbnailCache.setObject(thumbnail, forKey: key)
-                    if cell.pageNumber == pageNumber {
-                        DispatchQueue.main.async {
-                            cell.image = thumbnail
+                    await MainActor.run { [weak self, weak cell] in
+                        self?.thumbnailCache.setObject(thumbnail, forKey: key)
+                        if cell?.pageNumber == pageNumber {
+                            cell?.image = thumbnail
                         }
                     }
                 }
@@ -93,31 +82,18 @@ public class BookmarkViewController: UICollectionViewController, UICollectionVie
     }
 
     override public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let page = pdfDocument?.page(at: bookmarks[indexPath.item]) {
-            delegate?.bookmarkViewController(self, didSelectPage: page)
+        if let page = pdfDocument?.page(at: indexPath.item) {
+            delegate?.thumbnailGridViewController(self, didSelectPage: page)
         }
         collectionView.deselectItem(at: indexPath, animated: true)
     }
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize(for: indexPath)
-    }
-
-    private func refreshData() {
-        if let documentURL = pdfDocument?.documentURL?.absoluteString,
-            let bookmarks = UserDefaults.standard.array(forKey: documentURL) as? [Int] {
-            self.bookmarks = bookmarks
-            collectionView?.reloadData()
-        }
-    }
-
-    @objc func userDefaultsDidChange(_ notification: Notification) {
-        DispatchQueue.main.async { [weak self] in
-            self?.refreshData()
-        }
+        return self.cellSize(for: indexPath)
     }
 }
 
-protocol BookmarkViewControllerDelegate: AnyObject {
-    func bookmarkViewController(_ bookmarkViewController: BookmarkViewController, didSelectPage page: PDFPage)
+@MainActor
+protocol ThumbnailGridViewControllerDelegate: AnyObject {
+    func thumbnailGridViewController(_ thumbnailGridViewController: ThumbnailGridViewController, didSelectPage page: PDFPage)
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 public class OutlineCell: UITableViewCell {
     var label: String? = nil {
         didSet {
@@ -25,8 +26,10 @@ public class OutlineCell: UITableViewCell {
 
     override public func awakeFromNib() {
         super.awakeFromNib()
-        pageNumberLabel.textColor = .gray
-        pageNumberLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        Task { @MainActor in
+            pageNumberLabel.textColor = .gray
+            pageNumberLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        }
     }
 
     override public func updateConstraints() {

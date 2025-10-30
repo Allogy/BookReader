@@ -7,11 +7,12 @@
 //
 
 import UIKit
-import PDFKit
+@preconcurrency import PDFKit
 import MessageUI
 import UIKit.UIGestureRecognizerSubclass
 
-public class BookViewController: UIViewController, UIPopoverPresentationControllerDelegate, PDFViewDelegate, ActionMenuViewControllerDelegate, SearchViewControllerDelegate, ThumbnailGridViewControllerDelegate, OutlineViewControllerDelegate, BookmarkViewControllerDelegate, MFMailComposeViewControllerDelegate {
+@MainActor
+public class BookViewController: UIViewController, UIPopoverPresentationControllerDelegate, PDFViewDelegate, ActionMenuViewControllerDelegate, SearchViewControllerDelegate, ThumbnailGridViewControllerDelegate, OutlineViewControllerDelegate, BookmarkViewControllerDelegate {
     @objc public var pdfDocument: PDFDocument?
 
     @IBOutlet public weak var pdfView: PDFView!
@@ -63,7 +64,17 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     public var didChangePage: ((PDFView) -> Void)?
     public var willDismiss: (() -> Void)?
     
-    private var keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+    private var keyWindow: UIWindow? {
+        if #available(iOS 13.0, *) {
+            return UIApplication.shared.connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .first(where: { $0 is UIWindowScene })
+                .flatMap({ $0 as? UIWindowScene })?.windows
+                .first(where: \.isKeyWindow)
+        } else {
+            return UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+        }
+    }
 
     var bundle: Bundle!
     
@@ -212,6 +223,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         return .none
     }
 
+    @MainActor
     func actionMenuViewControllerShareDocument(_ actionMenuViewController: ActionMenuViewController) {
         let mailComposeViewController = MFMailComposeViewController()
         mailComposeViewController.mailComposeDelegate = self
@@ -234,6 +246,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         }
     }
 
+    @MainActor
     func actionMenuViewControllerPrintDocument(_ actionMenuViewController: ActionMenuViewController) {
         let printInteractionController = UIPrintInteractionController.shared
         printInteractionController.printingItem = pdfDocument?.dataRepresentation()
@@ -252,6 +265,7 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         }
     }
     
+    @MainActor
     func searchViewController(_ searchViewController: SearchViewController, didSelectSearchResult selection: PDFSelection) {
         selection.color = .yellow
         self.pdfView.currentSelection = selection
@@ -259,25 +273,22 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
         self.showBars()
     }
 
+    @MainActor
     func thumbnailGridViewController(_ thumbnailGridViewController: ThumbnailGridViewController, didSelectPage page: PDFPage) {
         self.resume()
         self.pdfView.go(to: page)
     }
 
+    @MainActor
     func outlineViewController(_ outlineViewController: OutlineViewController, didSelectOutlineAt destination: PDFDestination) {
         self.resume()
         self.pdfView.go(to: destination)
     }
 
+    @MainActor
     func bookmarkViewController(_ bookmarkViewController: BookmarkViewController, didSelectPage page: PDFPage) {
         self.resume()
         self.pdfView.go(to: page)
-    }
-    
-    //MARK: MFMailComposeViewControllerDelegate
-    
-    public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-       controller.dismiss(animated: true, completion: nil)
     }
 
     private func resume() {
@@ -494,6 +505,16 @@ public class BookViewController: UIViewController, UIPopoverPresentationControll
     }
 }
 
+// MARK: - MFMailComposeViewControllerDelegate
+extension BookViewController: MFMailComposeViewControllerDelegate {
+    nonisolated public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        Task { @MainActor in
+            controller.dismiss(animated: true, completion: nil)
+        }
+    }
+}
+
+@MainActor
 class PDFViewGestureRecognizer: UIGestureRecognizer {
     var isTracking = false
 

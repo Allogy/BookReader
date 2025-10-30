@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 public class SearchResultsCell: UITableViewCell {
     var section: String? = nil {
         didSet {
@@ -28,10 +29,12 @@ public class SearchResultsCell: UITableViewCell {
 
     override public func awakeFromNib() {
         super.awakeFromNib()
-        sectionLabel.font = UIFont.preferredFont(forTextStyle: .headline)
-        pageNumberLabel.textColor = .gray
-        pageNumberLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        resultTextLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        Task { @MainActor in
+            sectionLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+            pageNumberLabel.textColor = .gray
+            pageNumberLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+            resultTextLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        }
     }
 
     override public func layoutSubviews() {
