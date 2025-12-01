@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XKz-NW-4Fd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24128" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XKz-NW-4Fd">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -16,7 +15,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XKz-NW-4Fd" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="RP2-o8-441">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -31,14 +30,14 @@
         <!--PDFs-->
         <scene sceneID="iMT-to-Kxe">
             <objects>
-                <tableViewController storyboardIdentifier="BookshelfViewController" id="0wf-oF-bTk" customClass="BookshelfViewController" customModule="BookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="BookshelfViewController" id="0wf-oF-bTk" customClass="BookshelfViewController" customModule="BookReader" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="76" sectionHeaderHeight="28" sectionFooterHeight="28" id="88O-jC-xkR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="72" id="JTk-7X-o4Z" customClass="BookshelfCell" customModule="BookReader" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.5" width="375" height="72"/>
+                                <rect key="frame" x="0.0" y="50" width="375" height="72"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JTk-7X-o4Z" id="Kln-dB-79y">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
@@ -52,13 +51,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aWt-LM-MBv">
-                                            <rect key="frame" x="56" y="8" width="307" height="20.5"/>
+                                            <rect key="frame" x="56" y="8" width="307" height="24"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="He3-2s-nyI">
-                                            <rect key="frame" x="56" y="36.5" width="299" height="21"/>
+                                            <rect key="frame" x="56" y="40" width="299" height="24"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -97,7 +96,7 @@
         <!--Book View Controller-->
         <scene sceneID="Yrf-Lu-6I0">
             <objects>
-                <viewController storyboardIdentifier="BookViewController" id="c1d-mL-vIU" customClass="BookViewController" customModule="BookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BookViewController" id="c1d-mL-vIU" customClass="BookViewController" customModule="BookReader" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wu0-JT-Hpp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -128,10 +127,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uxG-pn-ceU">
-                                <rect key="frame" x="161" y="59" width="53" height="25"/>
+                                <rect key="frame" x="158" y="89" width="59.5" height="28.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O8q-AR-s5a">
-                                        <rect key="frame" x="8" y="4" width="37" height="17"/>
+                                        <rect key="frame" x="8" y="4" width="43.5" height="20.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -146,10 +145,10 @@
                                 </constraints>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iLu-hy-Yr2">
-                                <rect key="frame" x="161" y="583" width="53" height="25"/>
+                                <rect key="frame" x="158" y="579.5" width="59.5" height="28.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v3u-OX-nvq">
-                                        <rect key="frame" x="8" y="4" width="37" height="17"/>
+                                        <rect key="frame" x="8" y="4" width="43.5" height="20.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -244,7 +243,7 @@
         <!--Search View Controller-->
         <scene sceneID="leh-pd-lGq">
             <objects>
-                <tableViewController id="peJ-xt-vda" customClass="SearchViewController" customModule="BookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="peJ-xt-vda" customClass="SearchViewController" customModule="BookReader" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" id="kS8-I9-TTl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -263,15 +262,19 @@
         <!--Appearance View Controller-->
         <scene sceneID="RWb-mW-VlX">
             <objects>
-                <viewController storyboardIdentifier="AppearanceViewController" id="yAb-4U-zkt" customClass="AppearanceViewController" customModule="BookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AppearanceViewController" id="yAb-4U-zkt" customClass="AppearanceViewController" customModule="BookReader" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3Jf-r8-D1v">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="sOa-RE-GtP">
-                                <rect key="frame" x="14" y="8" width="292" height="29"/>
+                                <rect key="frame" x="16" y="28" width="288" height="8"/>
                                 <imageReference key="minimumValueImage" image="sun.min.fill" catalog="system" symbolScale="large"/>
                                 <imageReference key="maximumValueImage" image="sun.max.fill" catalog="system" symbolScale="large"/>
+                                <variation key="heightClass=regular-userInterfaceIdiom=mac-widthClass=compact">
+                                    <nil key="maximumValueImage"/>
+                                    <nil key="minimumValueImage"/>
+                                </variation>
                             </slider>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="iza-bz-CZc"/>
@@ -281,7 +284,6 @@
                             <constraint firstItem="iza-bz-CZc" firstAttribute="trailing" secondItem="sOa-RE-GtP" secondAttribute="trailing" constant="16" id="HQc-y4-jSg"/>
                             <constraint firstItem="sOa-RE-GtP" firstAttribute="leading" secondItem="iza-bz-CZc" secondAttribute="leading" constant="16" id="eaD-ta-0TJ"/>
                             <constraint firstItem="sOa-RE-GtP" firstAttribute="top" secondItem="iza-bz-CZc" secondAttribute="top" constant="8" id="lvv-b9-LJk"/>
-                            <constraint firstItem="sOa-RE-GtP" firstAttribute="centerY" secondItem="3Jf-r8-D1v" secondAttribute="centerY" id="xcf-bu-3yx"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="320" height="44"/>
@@ -296,7 +298,7 @@
         <!--Action Menu View Controller-->
         <scene sceneID="X4q-Ib-6xQ">
             <objects>
-                <tableViewController storyboardIdentifier="ActionMenuViewController" id="mFn-Jv-hqe" customClass="ActionMenuViewController" customModule="BookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ActionMenuViewController" id="mFn-Jv-hqe" customClass="ActionMenuViewController" customModule="BookReader" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="xRV-74-tkx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -305,7 +307,7 @@
                             <tableViewSection id="dsN-sY-Chp">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="SU6-kD-hWl" style="IBUITableViewCellStyleDefault" id="EeO-6k-Ww6" customClass="ActionMenuCell" customModule="BookReader" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="50" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EeO-6k-Ww6" id="9dS-kD-Nlo">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -322,14 +324,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="IcK-ng-2qJ" style="IBUITableViewCellStyleDefault" id="mqD-Ts-HtB" customClass="ActionMenuCell" customModule="BookReader" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="88.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="94" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mqD-Ts-HtB" id="41X-VZ-50Y">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Print" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IcK-ng-2qJ">
-                                                    <rect key="frame" x="16" y="0.0" width="288" height="44"/>
+                                                    <rect key="frame" x="8" y="0.0" width="304" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -355,7 +357,7 @@
         <!--Thumbnail Grid View Controller-->
         <scene sceneID="rSc-WL-EDg">
             <objects>
-                <collectionViewController storyboardIdentifier="ThumbnailGridViewController" id="h3f-Yq-tRX" customClass="ThumbnailGridViewController" customModule="BookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="ThumbnailGridViewController" id="h3f-Yq-tRX" customClass="ThumbnailGridViewController" customModule="BookReader" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="dlB-V6-X5k">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -380,27 +382,27 @@
         <!--Outline View Controller-->
         <scene sceneID="CN4-Fj-Knr">
             <objects>
-                <tableViewController storyboardIdentifier="OutlineViewController" id="7xh-Uc-iyv" customClass="OutlineViewController" customModule="BookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="OutlineViewController" id="7xh-Uc-iyv" customClass="OutlineViewController" customModule="BookReader" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" id="yDr-Rn-l9R">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="80" id="kgN-bO-HKq" customClass="OutlineCell" customModule="BookReader" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.5" width="375" height="80"/>
+                                <rect key="frame" x="0.0" y="50" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kgN-bO-HKq" id="g8g-5F-GmR">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vl-PO-lQO">
-                                            <rect key="frame" x="15" y="8" width="41.5" height="64.5"/>
+                                            <rect key="frame" x="15" y="8" width="48" height="64.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKn-cy-dwV">
-                                            <rect key="frame" x="318" y="29.5" width="42" height="21"/>
+                                            <rect key="frame" x="312" y="28" width="48" height="24"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -435,7 +437,7 @@
         <!--Bookmark View Controller-->
         <scene sceneID="kbF-nX-8tO">
             <objects>
-                <collectionViewController storyboardIdentifier="BookmarkViewController" id="njU-wR-lHC" customClass="BookmarkViewController" customModule="BookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="BookmarkViewController" id="njU-wR-lHC" customClass="BookmarkViewController" customModule="BookReader" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="kA2-3V-oDG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -463,7 +465,7 @@
                 <navigationController storyboardIdentifier="SearchViewController" automaticallyAdjustsScrollViewInsets="NO" id="y5Z-QX-gza" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="HwD-cp-YRn">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -477,10 +479,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="sun.max.fill" catalog="system" width="128" height="124"/>
-        <image name="sun.min.fill" catalog="system" width="128" height="121"/>
+        <image name="sun.max.fill" catalog="system" width="128" height="125"/>
+        <image name="sun.min.fill" catalog="system" width="128" height="123"/>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
