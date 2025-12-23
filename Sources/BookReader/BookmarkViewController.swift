@@ -113,7 +113,7 @@ public class BookmarkViewController: UICollectionViewController, UICollectionVie
     }
 
     @objc func userDefaultsDidChange(_ notification: Notification) {
-        DispatchQueue.main.async { [weak self] in
+        Task { @MainActor [weak self] in
             self?.refreshData()
         }
     }
